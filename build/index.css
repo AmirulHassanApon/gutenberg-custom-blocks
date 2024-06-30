@@ -1,0 +1,44 @@
+/* index.css */
+
+/* Styles for Custom Heading Block */
+.custom-heading-block {
+    margin-bottom: 20px;
+}
+
+.custom-heading-block h2 {
+    color: #333;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* Styles for Custom Accordion Block */
+.custom-accordion-block {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    overflow: hidden;
+}
+
+.accordion-title {
+    background-color: #f1f1f1;
+    padding: 12px 16px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.accordion-title:hover {
+    background-color: #e0e0e0;
+}
+
+.accordion-content {
+    padding: 16px;
+    background-color: #fff;
+    transition: max-height 0.3s ease-out;
+    max-height: 0;
+    overflow: hidden;
+}
+
+.custom-accordion-block.open .accordion-content {
+    max-height: 500px; /* Adjust based on your content height */
+}

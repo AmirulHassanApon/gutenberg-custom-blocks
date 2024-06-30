@@ -1,6 +1,6 @@
 const { registerBlockType } = wp.blocks;
-const { MediaUpload, MediaUploadCheck, InspectorControls } = wp.blockEditor;
-const { Button, PanelBody } = wp.components;
+const { MediaUpload, MediaUploadCheck, InspectorControls, BlockControls, AlignmentToolbar } = wp.blockEditor;
+const { Button, PanelBody, TextControl } = wp.components;
 
 registerBlockType( 'custom/image', {
     title: 'Custom Image',
@@ -10,9 +10,33 @@ registerBlockType( 'custom/image', {
         url: {
             type: 'string',
         },
+        alt: {
+            type: 'string',
+            default: '',
+        },
+        alignment: {
+            type: 'string',
+            default: 'none',
+        },
+        caption: {
+            type: 'string',
+            default: '',
+        },
     },
     edit: ( { attributes, setAttributes } ) => {
-        const { url } = attributes;
+        const { url, alt, alignment, caption } = attributes;
+
+        const onChangeAlt = ( newAlt ) => {
+            setAttributes( { alt: newAlt } );
+        };
+
+        const onChangeAlignment = ( newAlignment ) => {
+            setAttributes( { alignment: newAlignment } );
+        };
+
+        const onChangeCaption = ( newCaption ) => {
+            setAttributes( { caption: newCaption } );
+        };
 
         return (
             <>
@@ -30,11 +54,34 @@ registerBlockType( 'custom/image', {
                                 ) }
                             />
                         </MediaUploadCheck>
+                        { url && (
+                            <>
+                                <TextControl
+                                    label="Alt Text"
+                                    value={ alt }
+                                    onChange={ onChangeAlt }
+                                />
+                                <TextControl
+                                    label="Caption"
+                                    value={ caption }
+                                    onChange={ onChangeCaption }
+                                />
+                            </>
+                        ) }
                     </PanelBody>
                 </InspectorControls>
-                <div className="custom-image-block">
+                <BlockControls>
+                    <AlignmentToolbar
+                        value={ alignment }
+                        onChange={ onChangeAlignment }
+                    />
+                </BlockControls>
+                <div className={ `custom-image-block align${ alignment }` }>
                     { url ? (
-                        <img src={ url } alt="Custom Image" />
+                        <figure>
+                            <img src={ url } alt={ alt } />
+                            { caption && <figcaption>{ caption }</figcaption> }
+                        </figure>
                     ) : (
                         <Button isPrimary onClick={ open }>
                             Upload Image
@@ -45,8 +92,13 @@ registerBlockType( 'custom/image', {
         );
     },
     save: ( { attributes } ) => {
-        const { url } = attributes;
+        const { url, alt, alignment, caption } = attributes;
 
-        return url ? <img src={ url } alt="Custom Image" /> : null;
+        return (
+            <figure className={ `align${ alignment }` }>
+                <img src={ url } alt={ alt } />
+                { caption && <figcaption>{ caption }</figcaption> }
+            </figure>
+        );
     },
 } );
