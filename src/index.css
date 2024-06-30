@@ -1,0 +1,14 @@
+/* General styles for all custom blocks */
+.custom-image-block img {
+    max-width: 100%;
+    height: auto;
+}
+
+.custom-accordion-block .accordion-title {
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.custom-accordion-block .accordion-content {
+    display: none;
+}
